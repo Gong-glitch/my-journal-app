@@ -65,15 +65,9 @@ async function renderEntries() {
   });
 }
 
-// Form Submission with 4 Entry Limit Guard
+// Form Submission (Unlimited Entries Allowed)
 document.getElementById("entryForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  const entries = await getEntries();
-  if (entries.length >= 4) {
-    alert("Limit reached! You can only store up to 4 entries.");
-    return;
-  }
 
   const files = Array.from(document.getElementById("images").files);
   const base64Images = await Promise.all(files.map((file) => fileToBase64(file)));
