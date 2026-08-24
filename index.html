@@ -41,7 +41,7 @@
       font-size: 15px;
     }
 
-    .upload-form button { 
+    .btn-save { 
       width: 100%; 
       padding: 10px; 
       background: #ff8c00; 
@@ -51,6 +51,19 @@
       border-radius: 4px; 
       font-weight: bold;
       font-size: 15px;
+    }
+
+    .btn-download {
+      width: 100%;
+      padding: 10px;
+      background: #2196F3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 10px;
     }
 
     /* Entry Component */
@@ -159,7 +172,8 @@
     <input type="file" id="images" multiple accept="image/*" required />
     <textarea id="thoughts" placeholder="Text / Thoughts / Connections" rows="3" required></textarea>
     <textarea id="lyrics" placeholder="Specific Lyrics" rows="3" required></textarea>
-    <button type="submit">Save Entry</button>
+    <button type="submit" class="btn-save">Save Entry</button>
+    <button type="button" id="downloadBtn" class="btn-download">Download Webpage (.html)</button>
   </form>
 
   <!-- Container for Feed Entries -->
