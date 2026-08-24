@@ -65,7 +65,7 @@ async function renderEntries() {
   });
 }
 
-// Form Submission (Unlimited Entries Allowed)
+// Form Submission
 document.getElementById("entryForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -99,6 +99,54 @@ async function deleteEntry(id) {
   store.delete(id);
   transaction.oncomplete = () => renderEntries();
 }
+
+// Standalone Download Functionality (Detached from Database)
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const container = document.getElementById("entriesContainer");
+  
+  if (!container.children.length) {
+    alert("No entries to download yet! Add some entries first.");
+    return;
+  }
+
+  // Clone entries to safely strip delete buttons out of the backup file
+  const cloneContainer = container.cloneNode(true);
+  const deleteBtns = cloneContainer.querySelectorAll(".delete-btn");
+  deleteBtns.forEach(btn => btn.remove());
+
+  const styles = document.querySelector("style").innerHTML;
+
+  // Build static HTML string with embedded images and layout
+  const fullHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal Backup - ${new Date().toLocaleDateString()}</title>
+  <style>
+    ${styles}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align: center; color: #333; margin-bottom: 30px;">Saved Journal Backup</h2>
+    <div>${cloneContainer.innerHTML}</div>
+  </div>
+</body>
+</html>`;
+
+  const blob = new Blob([fullHtml], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  
+  a.href = url;
+  a.download = `journal-backup-${new Date().toISOString().slice(0, 10)}.html`;
+  document.body.appendChild(a);
+  a.click();
+  
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
 
 // Initial render call on startup
 renderEntries();
