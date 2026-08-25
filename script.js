@@ -90,7 +90,6 @@ async function renderEntries() {
   });
 }
 
-// 1. SAVE LOCALLY
 document.getElementById("entryForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -118,11 +117,8 @@ document.getElementById("entryForm").addEventListener("submit", async (e) => {
   };
 });
 
-// 2. SYNC ONLY UNSYNCED ENTRIES
 document.getElementById("syncSlidesBtn").addEventListener("click", async () => {
   const entries = await getEntries();
-  
-  // Strict check: filters out items where synced is true
   const unsyncedEntries = entries.filter((entry) => entry.synced !== true);
 
   if (!unsyncedEntries.length) {
@@ -145,9 +141,7 @@ document.getElementById("syncSlidesBtn").addEventListener("click", async () => {
         body: JSON.stringify(entry)
       });
 
-      // Instantly mark entry as synced in database
       await markEntryAsSynced(entry);
-
     } catch (err) {
       console.error("Failed item sync", err);
     }
