@@ -1,5 +1,4 @@
-const SLIDES_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykNO8NWzxyG7WicNkRG0cSoM0NapTgIHVKFGvrftz3zi8_ndFfgTX4D1PxQaiEZRSe/exec";
-
+const SLIDES_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzB78vCB7KGj1V8dZmgUxeAFxf-mkW-MN94ZqlE9nKStrGBBoy_D4mg9HFM6hnlKUBf/exec";
 function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open("JournalDB", 1);
@@ -71,8 +70,8 @@ async function renderEntries() {
       .join("");
 
     const statusBadge = (entry.synced === true) 
-      ? `<span style="color: green; font-size: 12px; font-weight: bold;">✔ Synced</span>` 
-      : `<span style="color: orange; font-size: 12px; font-weight: bold;">⏳ Not Synced</span>`;
+      ? `<span style="color: #68d391; font-size: 11px; font-weight: bold; font-family: 'Space Mono', monospace;">✔ Synced</span>` 
+      : `<span style="color: #f6ad55; font-size: 11px; font-weight: bold; font-family: 'Space Mono', monospace;">⏳ Not Synced</span>`;
 
     const card = document.createElement("article");
     card.className = "entry-card";
@@ -134,11 +133,18 @@ document.getElementById("syncSlidesBtn").addEventListener("click", async () => {
 
   for (const entry of unsyncedEntries) {
     try {
+      const payload = {
+        customDate: entry.customDate || "",
+        author: entry.author || "",
+        thoughts: entry.thoughts || "",
+        lyrics: entry.lyrics || "",
+        images: entry.images || []
+      };
+
       await fetch(SLIDES_APPS_SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain" },
-        body: JSON.stringify(entry)
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
       });
 
       await markEntryAsSynced(entry);
@@ -149,7 +155,7 @@ document.getElementById("syncSlidesBtn").addEventListener("click", async () => {
 
   alert("Sync completed!");
   syncBtn.disabled = false;
-  syncBtn.innerText = "Sync All Entries to Google Slides";
+  syncBtn.innerText = "Sync all entries to Slides";
   renderEntries();
 });
 
