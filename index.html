@@ -4,188 +4,353 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Journal Feed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { 
-      font-family: sans-serif; 
-      background-color: #f4f4f4; 
-      margin: 0; 
-      padding: 20px; 
+    :root {
+      --paper: #fff5ee;
+      --paper-edge: #f6c9a8;
+      --ink: #b8280a;
+      --ink-soft: #c85a2e;
+      --wine: #a30262;
+      --wine-deep: #7c014c;
+      --teal: #d362a4;
+      --teal-deep: #b3417e;
+      --mustard: #ff9a56;
+      --mustard-deep: #e67f3c;
+      --cream: #faf5e9;
     }
 
-    .top-bar { 
-      display: flex; 
-      justify-content: flex-start; 
-      max-width: 500px; 
-      margin: 0 auto 15px auto; 
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background-color: #fbdcc4;
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(184, 40, 10, 0.09) 1px, transparent 0);
+      background-size: 18px 18px;
+      color: var(--ink);
+      margin: 0;
+      padding: 32px 16px 64px;
     }
 
-    .btn-slides-link { 
-      display: inline-flex; 
-      align-items: center; 
-      gap: 6px; 
-      background-color: #4285F4; 
-      color: #ffffff; 
-      text-decoration: none; 
-      padding: 8px 14px; 
-      border-radius: 4px; 
-      font-size: 13px; 
-      font-weight: bold; 
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15); 
-      transition: background-color 0.2s ease; 
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      max-width: 520px;
+      margin: 0 auto 20px auto;
     }
 
-    .btn-slides-link:hover { 
-      background-color: #3367D6; 
+    .btn-slides-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--ink);
+      color: var(--cream);
+      text-decoration: none;
+      padding: 9px 16px;
+      border-radius: 3px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      box-shadow: 2px 2px 0 var(--paper-edge);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .container { 
-      max-width: 500px; 
-      margin: 0 auto; 
+    .btn-slides-link:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 var(--paper-edge);
     }
 
-    .upload-form { 
-      background: #fff; 
-      padding: 15px; 
-      border-radius: 4px; 
-      margin-bottom: 30px; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    .btn-slides-link:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
     }
 
-    .upload-form h3 { 
-      margin-top: 0; 
-      margin-bottom: 12px; 
-      font-size: 18px; 
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
     }
 
-    .upload-form input, 
-    .upload-form textarea { 
-      width: 100%; 
-      margin-bottom: 10px; 
-      padding: 8px; 
-      box-sizing: border-box; 
-      font-size: 15px; 
+    .upload-form {
+      background: var(--paper);
+      border: 1px solid var(--paper-edge);
+      padding: 22px 20px 20px;
+      border-radius: 3px;
+      margin-bottom: 44px;
+      box-shadow: 0 10px 24px rgba(38, 27, 12, 0.18);
+      position: relative;
     }
 
-    .btn-add { 
-      width: 100%; 
-      padding: 10px; 
-      background: #ff8c00; 
-      color: white; 
-      border: none; 
-      cursor: pointer; 
-      border-radius: 4px; 
-      font-weight: bold; 
-      font-size: 15px; 
-      margin-bottom: 10px; 
+    .upload-form::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 28px;
+      width: 60px;
+      height: 20px;
+      background: rgba(201, 138, 44, 0.55);
+      transform: rotate(-3deg);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.12);
     }
 
-    .btn-sync { 
-      width: 100%; 
-      padding: 10px; 
-      background: #0f9d58; 
-      color: white; 
-      border: none; 
-      cursor: pointer; 
-      border-radius: 4px; 
-      font-weight: bold; 
-      font-size: 15px; 
+    .upload-form h3 {
+      margin: 0 0 16px;
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--ink);
     }
 
-    .btn-sync:disabled { 
-      background: #cccccc; 
-      cursor: not-allowed; 
+    .upload-form label,
+    .field-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin: 12px 0 5px;
     }
 
-    .entry-card { 
-      margin-bottom: 40px; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 15px; 
+    .upload-form input,
+    .upload-form textarea {
+      width: 100%;
+      margin-bottom: 4px;
+      padding: 10px 12px;
+      box-sizing: border-box;
+      font-size: 14.5px;
+      font-family: 'Work Sans', sans-serif;
+      background: var(--cream);
+      border: 1px solid var(--paper-edge);
+      border-radius: 3px;
+      color: var(--ink);
     }
 
-    .entry-header { 
-      width: 55%; 
-      background-color: #ff8c00; 
-      color: #ffffff; 
-      padding: 12px 15px; 
-      border-radius: 2px; 
-      text-align: left; 
-      box-sizing: border-box; 
+    .upload-form input::placeholder,
+    .upload-form textarea::placeholder {
+      color: #a89f8c;
     }
 
-    .entry-header .date { 
-      font-size: 15px; 
-      display: block; 
-      margin-bottom: 4px; 
+    .upload-form textarea { resize: vertical; }
+
+    .btn-add,
+    .btn-sync {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 14px;
+      transition: transform 0.15s ease, filter 0.15s ease;
     }
 
-    .entry-header .author { 
-      font-weight: bold; 
-      font-size: 15px; 
+    .btn-add {
+      background: var(--mustard);
+      color: var(--cream);
     }
 
-    .entry-images-container { 
-      width: 100%; 
-      height: 280px; 
-      background-color: #f0f0f0; 
-      border: 4px solid #ffcc80; 
-      border-radius: 2px; 
-      display: flex; 
-      overflow-x: auto; 
-      scroll-snap-type: x mandatory; 
-      gap: 10px; 
-      box-sizing: border-box; 
+    .btn-add:hover { filter: brightness(1.08); }
+
+    .btn-sync {
+      background: var(--teal);
+      color: var(--cream);
     }
 
-    .entry-images-container img { 
-      flex: 0 0 100%; 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      scroll-snap-align: start; 
+    .btn-sync:hover { filter: brightness(1.08); }
+
+    .btn-add:active,
+    .btn-sync:active { transform: scale(0.99); }
+
+    .btn-sync:disabled {
+      background: #b9b2a3;
+      color: #efe9dc;
+      cursor: not-allowed;
+      filter: none;
     }
 
-    .entry-box-thoughts { 
-      width: 100%; 
-      height: 180px; 
-      background-color: #ff69b4; 
-      color: #ffffff; 
-      padding: 20px; 
-      box-sizing: border-box; 
-      border-radius: 2px; 
-      text-align: left; 
-      font-size: 15px; 
-      white-space: pre-line; 
-      overflow-y: auto; 
-      overflow-wrap: break-word; 
-      word-break: break-word; 
+    .entry-card {
+      margin-bottom: 52px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .entry-box-lyrics { 
-      width: 100%; 
-      height: 180px; 
-      background-color: #ff00ff; 
-      color: #ffffff; 
-      padding: 20px; 
-      box-sizing: border-box; 
-      border-radius: 2px; 
-      text-align: left; 
-      font-size: 15px; 
-      white-space: pre-line; 
-      overflow-y: auto; 
-      overflow-wrap: break-word; 
-      word-break: break-word; 
+    .entry-header {
+      width: 62%;
+      background-color: var(--ink);
+      color: var(--cream);
+      padding: 12px 18px;
+      border-radius: 2px;
+      text-align: left;
+      box-sizing: border-box;
+      position: relative;
+      transform: rotate(-1deg);
+      box-shadow: 3px 3px 0 var(--paper-edge);
     }
 
-    .delete-btn { 
-      background: #e53935; 
-      color: white; 
-      border: none; 
-      padding: 8px 14px; 
-      border-radius: 4px; 
-      cursor: pointer; 
-      width: fit-content; 
-      font-size: 13px; 
+    .entry-header::before,
+    .entry-header::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--paper);
+      transform: translateY(-50%);
+      box-shadow: inset 0 0 0 2px var(--ink);
+    }
+
+    .entry-header::before { right: 34px; }
+    .entry-header::after { right: 16px; }
+
+    .entry-header .date {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 3px;
+      color: #d9c6a3;
+    }
+
+    .entry-header .author {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 17px;
+    }
+
+    .entry-images-container {
+      width: 100%;
+      height: 280px;
+      background-color: var(--cream);
+      border: 6px solid #ffffff;
+      outline: 1px solid var(--paper-edge);
+      border-radius: 2px;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 10px;
+      box-sizing: border-box;
+      box-shadow: 0 6px 12px rgba(38, 27, 12, 0.2);
+      position: relative;
+      z-index: 0;
+    }
+
+    .entry-images-container img {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      scroll-snap-align: start;
+    }
+
+    .entry-box-thoughts,
+    .entry-box-lyrics {
+      width: 100%;
+      min-height: 150px;
+      padding: 20px 20px 18px;
+      box-sizing: border-box;
+      border-radius: 2px;
+      text-align: left;
+      font-size: 14.5px;
+      line-height: 1.55;
+      white-space: pre-line;
+      overflow-y: auto;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      position: relative;
+      z-index: 1;
+    }
+
+    .entry-box-thoughts {
+      background-color: var(--mustard);
+      color: #fff8ec;
+      font-family: 'Work Sans', sans-serif;
+      padding-top: 40px;
+    }
+
+    .entry-box-thoughts::before {
+      content: "field notes";
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    .entry-box-lyrics {
+      background-color: var(--wine);
+      color: var(--cream);
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 15px;
+      border-top: 2px dashed rgba(250, 245, 233, 0.4);
+      mask-image: radial-gradient(circle 5px at 12px 0, transparent 5px, black 5.5px),
+                  radial-gradient(circle 5px at calc(100% - 12px) 0, transparent 5px, black 5.5px);
+      -webkit-mask-image: radial-gradient(circle 5px at 12px 0, transparent 5px, black 5.5px),
+                          radial-gradient(circle 5px at calc(100% - 12px) 0, transparent 5px, black 5.5px);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+
+    .entry-box-lyrics::before {
+      content: "\201C";
+      position: absolute;
+      top: 4px;
+      left: 14px;
+      font-size: 32px;
+      color: rgba(250, 245, 233, 0.35);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .delete-btn {
+      background: transparent;
+      color: var(--wine-deep);
+      border: 1px solid var(--wine-deep);
+      padding: 7px 14px;
+      border-radius: 3px;
+      cursor: pointer;
+      width: fit-content;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .delete-btn:hover {
+      background: var(--wine-deep);
+      color: var(--cream);
+    }
+
+    @media (max-width: 420px) {
+      .entry-header { width: 78%; }
+      .entry-images-container { height: 220px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
     }
   </style>
 </head>
@@ -193,21 +358,31 @@
 
 <div class="top-bar">
   <a href="https://docs.google.com/presentation/d/14yKn1Oq3R59Gvb3yU1F2KY--Xhyu14sizF3rstn5s70/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-slides-link">
-    📊 Open Google Slides
+    📊 Open Slides
   </a>
 </div>
 
 <div class="container">
   <form id="entryForm" class="upload-form">
-    <h3>Journal Entry Form</h3>
+    <h3>New Journal Entry</h3>
+
+    <label class="field-label" for="customDate">Date</label>
     <input type="date" id="customDate" required />
-    <input type="text" id="author" placeholder="Author Name" required />
+
+    <label class="field-label" for="author">Author</label>
+    <input type="text" id="author" placeholder="Who's writing this one?" required />
+
+    <label class="field-label" for="images">Photos</label>
     <input type="file" id="images" multiple accept="image/*" required />
-    <textarea id="thoughts" placeholder="Text / Thoughts / Connections" rows="3" required></textarea>
-    <textarea id="lyrics" placeholder="Specific Lyrics" rows="3" required></textarea>
-    
-    <button type="submit" class="btn-add">+ Save Entry Locally</button>
-    <button type="button" id="syncSlidesBtn" class="btn-sync">Sync All Entries to Google Slides</button>
+
+    <label class="field-label" for="thoughts">Thoughts &amp; connections</label>
+    <textarea id="thoughts" placeholder="What's on your mind..." rows="3" required></textarea>
+
+    <label class="field-label" for="lyrics">Lyrics</label>
+    <textarea id="lyrics" placeholder="The lines that got you" rows="3" required></textarea>
+
+    <button type="submit" class="btn-add">+ Save entry locally</button>
+    <button type="button" id="syncSlidesBtn" class="btn-sync">Sync all entries to Slides</button>
   </form>
 
   <div id="entriesContainer"></div>
