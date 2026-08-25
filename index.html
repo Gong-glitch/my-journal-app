@@ -17,12 +17,11 @@
       margin: 0 auto; 
     }
 
-    /* Upload Form */
     .upload-form { 
       background: #fff; 
       padding: 15px; 
       border-radius: 4px; 
-      margin-bottom: 40px; 
+      margin-bottom: 30px; 
       box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
     }
 
@@ -41,7 +40,7 @@
       font-size: 15px;
     }
 
-    .btn-save { 
+    .btn-add { 
       width: 100%; 
       padding: 10px; 
       background: #ff8c00; 
@@ -51,30 +50,33 @@
       border-radius: 4px; 
       font-weight: bold;
       font-size: 15px;
+      margin-bottom: 10px;
     }
 
-    .btn-download {
-      width: 100%;
-      padding: 10px;
-      background: #2196F3;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
+    .btn-sync { 
+      width: 100%; 
+      padding: 10px; 
+      background: #0f9d58; 
+      color: white; 
+      border: none; 
+      cursor: pointer; 
+      border-radius: 4px; 
       font-weight: bold;
       font-size: 15px;
-      margin-top: 10px;
     }
 
-    /* Entry Component */
+    .btn-sync:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+
     .entry-card { 
-      margin-bottom: 50px; 
+      margin-bottom: 40px; 
       display: flex; 
       flex-direction: column; 
       gap: 15px; 
     }
 
-    /* Header Box: Date & Author (Orange) */
     .entry-header { 
       width: 55%; 
       background-color: #ff8c00; 
@@ -96,7 +98,6 @@
       font-size: 15px; 
     }
 
-    /* Image Container (Light Orange Border) */
     .entry-images-container { 
       width: 100%; 
       height: 280px; 
@@ -118,7 +119,6 @@
       scroll-snap-align: start; 
     }
 
-    /* Thoughts Box (Pink) */
     .entry-box-thoughts { 
       width: 100%; 
       height: 180px; 
@@ -133,7 +133,6 @@
       overflow-y: auto;
     }
 
-    /* Lyrics Box (Magenta) */
     .entry-box-lyrics { 
       width: 100%; 
       height: 180px; 
@@ -157,26 +156,24 @@
       cursor: pointer; 
       width: fit-content; 
       font-size: 13px;
-      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- Upload Form -->
   <form id="entryForm" class="upload-form">
-    <h3>Add Entry</h3>
+    <h3>Journal Entry Form</h3>
     <input type="date" id="customDate" required />
     <input type="text" id="author" placeholder="Author Name" required />
     <input type="file" id="images" multiple accept="image/*" required />
     <textarea id="thoughts" placeholder="Text / Thoughts / Connections" rows="3" required></textarea>
     <textarea id="lyrics" placeholder="Specific Lyrics" rows="3" required></textarea>
-    <button type="submit" class="btn-save">Save Entry</button>
-    <button type="button" id="downloadBtn" class="btn-download">Download Webpage (.html)</button>
+    
+    <button type="submit" class="btn-add">+ Save Entry Locally</button>
+    <button type="button" id="syncSlidesBtn" class="btn-sync">Sync All Entries to Google Slides</button>
   </form>
 
-  <!-- Container for Feed Entries -->
   <div id="entriesContainer"></div>
 </div>
 
