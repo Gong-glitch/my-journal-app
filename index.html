@@ -12,6 +12,32 @@
       padding: 20px; 
     }
 
+    .top-bar {
+      display: flex;
+      justify-content: flex-start;
+      max-width: 500px;
+      margin: 0 auto 15px auto;
+    }
+
+    .btn-slides-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: #4285F4;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-slides-link:hover {
+      background-color: #3367D6;
+    }
+
     .container { 
       max-width: 500px; 
       margin: 0 auto; 
@@ -160,6 +186,18 @@
   </style>
 </head>
 <body>
+
+<!-- Top Left Button Container -->
+<div class="top-bar">
+  <a 
+    href="https://docs.google.com/presentation/d/14yKn1Oq3R59Gvb3yU1F2KY--Xhyu14sizF3rstn5s70/edit?usp=sharing" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    class="btn-slides-link"
+  >
+    📊 Open Google Slides
+  </a>
+</div>
 
 <div class="container">
   <form id="entryForm" class="upload-form">
